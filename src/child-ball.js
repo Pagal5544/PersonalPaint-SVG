@@ -2,14 +2,18 @@ const $=id=>document.getElementById(id), W=720,H=1280,FPS=30,DURATION=30,TOTAL=F
 let playing=false,raf=0,start=0,pausedAt=0,recorder=null,chunks=[];
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 function frame(t){
- const cycle=t%6, phase=cycle/6*Math.PI*2, bounce=Math.abs(Math.sin(phase*2))*24;
- const cx=330+Math.sin(t*.62)*70, cy=815-bounce;
- const leg=Math.sin(phase)*34, arm=Math.sin(phase+Math.PI)*28;
- const ballX=500+Math.sin(t*1.45)*155, ballY=910-Math.abs(Math.sin(t*1.45))*165;
- const kick=Math.max(0,Math.sin(t*1.45+1.4))*.9;
- const childX=cx+Math.sin(t*.62+1)*22;
+ const run=t%10, segment=Math.floor(t/10), direction=segment%2===0?1:-1;
+ const progress=run/10, phase=t*2.9, stride=Math.sin(phase);
+ // बच्चा पूरे मैदान में एक तरफ से दूसरी तरफ दौड़ता है; हर 10 सेकंड दिशा बदलता है।
+ const childX=direction===1?105+progress*500:605-progress*500;
+ const kickPulse=Math.max(0,Math.sin(run*1.05-1.0));
+ const bounce=Math.abs(stride)*20 + kickPulse*24, cy=815-bounce;
+ const leg=stride*42, arm=Math.sin(phase+Math.PI)*34;
+ // गेंद हमेशा बच्चे के आगे रहती है और किक के बाद ऊँची उछलती है।
+ const ballX=Math.max(58,Math.min(662,childX+direction*(112+kickPulse*45)));
+ const ballY=930-kickPulse*190-Math.abs(Math.sin(run*2.2))*38;
  const sky=`<rect width="720" height="1280" fill="#8bdcf5"/><circle cx="560" cy="190" r="78" fill="#fff0a6"/><path d="M0 780 Q160 650 330 770 T720 740 V1280 H0Z" fill="#74bd67"/><path d="M0 950 Q190 840 360 950 T720 900 V1280 H0Z" fill="#4d9d55"/><path d="M0 1080 Q220 990 430 1080 T720 1040 V1280 H0Z" fill="#337c49"/><g fill="#287b4b"><circle cx="90" cy="590" r="95"/><circle cx="160" cy="550" r="110"/><circle cx="635" cy="570" r="115"/></g><g fill="#87532f"><path d="M112 620h28v270h-28zM618 630h30v280h-30z"/></g><path d="M0 1125 Q360 1085 720 1125" stroke="#d9e9a1" stroke-width="8" fill="none" opacity=".55"/>`;
- const boy=`<g transform="translate(${childX} ${cy})">
+ const boy=`<g transform="translate(${childX} ${cy}) scale(${direction} 1)">
  <ellipse cx="0" cy="300" rx="104" ry="22" fill="#1e633e" opacity=".25"/>
  <!-- back arm -->
  <g transform="translate(-52 75) rotate(${-arm*.7})"><path d="M0 0 Q-65 32 -82 112" fill="none" stroke="#a85e35" stroke-width="35" stroke-linecap="round"/><circle cx="-83" cy="118" r="19" fill="#b96c42"/></g>
