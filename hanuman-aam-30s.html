@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="hi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>हनुमान जी — आम तोड़ते हुए | 30 सेकंड SVG Animation</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#101426;color:#fff;font:16px system-ui;text-align:center}.wrap{max-width:620px;margin:auto;padding:16px}.stage{width:min(100%,56.25vh);aspect-ratio:9/16;margin:10px auto;background:#8bd2ed;border:1px solid #536078;border-radius:14px;overflow:hidden}svg{width:100%;height:100%;display:block}.controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:14px 0}button{border:0;border-radius:10px;padding:12px 16px;background:#f2b640;color:#24180b;font-weight:700;font-size:15px}button:disabled{opacity:.5}p{color:#cbd3e5;font-size:14px}.status{min-height:24px;color:#ffe49b}
+</style></head><body><main class="wrap"><h2>हनुमान जी आम तोड़ते हुए</h2><p>30 सेकंड · 30 FPS · 900 अलग SVG फ्रेम</p><div class="stage" id="stage"></div><div class="controls"><button id="play">एनिमेशन चलाएँ</button><button id="zip">900 SVG फ्रेम ZIP</button><button id="video">वीडियो रिकॉर्ड करें (WebM)</button></div><div class="status" id="status">तैयार</div><p>वीडियो रिकॉर्डिंग ब्राउज़र में रियल-टाइम होगी। MP4 में बदलने के लिए WebM को किसी वीडियो एडिटर में खोलें।</p></main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+const stage=document.getElementById('stage'),status=document.getElementById('status');
+const W=540,H=960,FPS=30,COUNT=900;
+const smooth=x=>{x=Math.max(0,Math.min(1,x));return x*x*(3-2*x)};
+const lerp=(a,b,t)=>a+(b-a)*t;
+function at(t,keys){for(let i=0;i<keys.length-1;i++){let [a,x]=keys[i],[b,y]=keys[i+1];if(t<=b)return lerp(x,y,smooth((t-a)/(b-a)));}return keys[keys.length-1][1]}
+function frame(i){
+ const t=i/FPS,reach=at(t,[[0,385],[7,385],[13.5,410],[15.2,410],[19.2,300],[30,300]]),
+ ey=at(t,[[0,545],[7,545],[13.5,405],[15.2,405],[19.2,405],[30,405]]),
+ hx=at(t,[[0,385],[7,385],[13.5,410],[15.2,410],[19.2,300],[30,300]]),
+ hy=at(t,[[0,565],[7,565],[13.5,310],[15.2,310],[19.2,360],[30,360]]),
+ fx=at(t,[[0,414],[14,414],[15.2,410],[19.2,300],[30,300]]),
+ fy=at(t,[[0,335],[14,335],[15.2,355],[19.2,355],[30,355]]),
+ treeFruit=t<14.8,held=t>=14.8,blink=[3,9,17,25,28.5].some(b=>Math.abs(t-b)<.12);
+ const fruit=(x,y)=>'<g transform="translate('+x+' '+y+')"><path d="M0-18C-25-38-35 2-22 30-12 56 16 55 27 27 40-5 24-34 0-18Z" fill="#f6b51e" stroke="#a65a18" stroke-width="4"/><path d="M0-19Q3-38 17-43" fill="none" stroke="#69431d" stroke-width="6"/><path d="M7-29Q35-48 43-27Q24-19 7-29Z" fill="#348746"/></g>';
+ return `<svg xmlns="http://www.w3.org/2000/svg" width="540" height="960" viewBox="0 0 540 960">
+ <defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#62c8ee"/><stop offset=".7" stop-color="#d6efc6"/><stop offset="1" stop-color="#f8d68b"/></linearGradient><linearGradient id="fur" x2="1" y2="1"><stop stop-color="#ffd5a0"/><stop offset=".55" stop-color="#df9258"/><stop offset="1" stop-color="#a85232"/></linearGradient><linearGradient id="cloth" x2="0" y2="1"><stop stop-color="#ffe76d"/><stop offset=".55" stop-color="#ff941f"/><stop offset="1" stop-color="#d8321d"/></linearGradient><linearGradient id="gold" x2="0" y2="1"><stop stop-color="#fff4a6"/><stop offset=".55" stop-color="#e6a42d"/><stop offset="1" stop-color="#995014"/></linearGradient></defs>
+ <rect width="540" height="960" fill="url(#sky)"/><circle cx="440" cy="145" r="52" fill="#fff0b2"/>
+ <path d="M0 650Q110 580 220 650T540 625V960H0Z" fill="#91bd69"/><path d="M0 730Q130 650 270 720T540 700V960H0Z" fill="#5f9e55"/>
+ <path d="M468 960Q430 690 448 490Q462 360 365 265" fill="none" stroke="#81502e" stroke-width="62" stroke-linecap="round"/><path d="M450 520Q365 410 280 410M455 455Q500 360 535 340" fill="none" stroke="#81502e" stroke-width="25"/>
+ <g fill="#238247"><ellipse cx="335" cy="255" rx="130" ry="88"/><ellipse cx="440" cy="230" rx="120" ry="88"/><ellipse cx="500" cy="330" rx="105" ry="80"/><ellipse cx="285" cy="350" rx="90" ry="65"/></g><g fill="#45a34e"><ellipse cx="340" cy="220" rx="95" ry="60"/><ellipse cx="455" cy="210" rx="85" ry="58"/><ellipse cx="505" cy="300" rx="75" ry="58"/></g>
+ ${treeFruit?fruit(414,335):''}<ellipse cx="225" cy="872" rx="145" ry="20" fill="#29482e" opacity=".25"/>
+ <path d="M170 625Q70 600 82 520Q95 455 150 485Q195 510 160 550" fill="none" stroke="#a95735" stroke-width="19" stroke-linecap="round"/>
+ <path d="M165 760Q145 820 140 875Q165 900 210 880L240 815 265 885Q310 905 345 880L300 760Z" fill="url(#fur)" stroke="#85442e" stroke-width="7"/>
+ <path d="M155 665Q235 700 325 665L345 815Q275 865 205 865Q160 820 155 665Z" fill="url(#cloth)" stroke="#963d25" stroke-width="8"/>
+ <path d="M155 425Q220 390 300 425Q340 500 320 690Q270 745 190 710Q145 650 155 425Z" fill="url(#fur)" stroke="#85442e" stroke-width="8"/>
+ <path d="M165 455Q120 500 118 590L105 665" fill="none" stroke="#b96a3d" stroke-width="43" stroke-linecap="round"/>
+ <path d="M292 455Q'+(hx-292)+' '+(ey-455)+' '+hx+' '+hy+'" fill="none" stroke="#b96a3d" stroke-width="43" stroke-linecap="round"/><ellipse cx="'+hx+'" cy="'+hy+'" rx="20" ry="16" fill="#f4b77d" stroke="#8f4b31" stroke-width="4"/>
+ <path d="M205 390L205 430Q235 455 265 430L265 390Z" fill="url(#fur)" stroke="#85442e" stroke-width="6"/>
+ <path d="M155 260Q165 185 235 185Q315 190 322 270L310 360Q290 415 235 420Q175 405 158 355Z" fill="url(#fur)" stroke="#85442e" stroke-width="8"/>
+ <ellipse cx="238" cy="355" rx="62" ry="42" fill="#f4c18f" stroke="#9c5538" stroke-width="5"/>
+ ${blink?'<path d="M190 317Q210 325 229 317M248 317Q268 325 286 317" stroke="#542d25" stroke-width="7" fill="none"/>':'<ellipse cx="210" cy="321" rx="11" ry="15" fill="white"/><ellipse cx="267" cy="321" rx="11" ry="15" fill="white"/><circle cx="213" cy="323" r="6"/><circle cx="270" cy="323" r="6"/>'}
+ <path d="M234 250L234 305" stroke="#c72d2d" stroke-width="7"/><ellipse cx="239" cy="371" rx="11" ry="7" fill="#562b25"/>
+ <path d="M155 230L145 155 195 180 235 112 275 180 325 155 315 235Z" fill="url(#gold)" stroke="#88501d" stroke-width="7"/><circle cx="235" cy="177" r="14" fill="#c92d35" stroke="#fff1a0" stroke-width="5"/>
+ <path d="M170 440Q235 535 300 440" fill="none" stroke="#e6a42d" stroke-width="12"/><path d="M235 505L215 530 235 558 255 530Z" fill="#e6a42d"/>
+ ${held?fruit(fx,fy):''}<text x="270" y="940" text-anchor="middle" font-size="22" font-family="serif" fill="#fff3c9">जय श्री राम</text></svg>`;
+}
+function show(i){stage.innerHTML=frame(i)}
+let playing=false;
+document.getElementById('play').onclick=async()=>{if(playing)return;playing=true;let start=performance.now();for(let i=0;i<COUNT&&playing;i++){show(i);await new Promise(r=>setTimeout(r,1000/FPS));}playing=false;status.textContent='एनिमेशन पूरा हुआ';};
+document.getElementById('zip').onclick=async()=>{if(!window.JSZip){status.textContent='ZIP library load नहीं हुई; इंटरनेट कनेक्शन जाँचें';return;}let b=document.getElementById('zip');b.disabled=true;let z=new JSZip(),folder=z.folder('svg_frames');for(let i=0;i<COUNT;i++){folder.file('frame_'+String(i).padStart(4,'0')+'.svg',frame(i));if(i%50===0)status.textContent='SVG फ्रेम तैयार: '+i+'/900';}let blob=await z.generateAsync({type:'blob'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='Hanuman_900_SVG_Frames.zip';a.click();URL.revokeObjectURL(a.href);b.disabled=false;status.textContent='900 SVG फ्रेम ZIP डाउनलोड हो गया';};
+document.getElementById('video').onclick=async()=>{let b=document.getElementById('video');if(!HTMLCanvasElement.prototype.captureStream||!window.MediaRecorder){status.textContent='इस ब्राउज़र में वीडियो रिकॉर्डिंग समर्थित नहीं';return;}b.disabled=true;let canvas=document.createElement('canvas');canvas.width=W;canvas.height=H;let ctx=canvas.getContext('2d'),stream=canvas.captureStream(FPS),rec=new MediaRecorder(stream,{mimeType:'video/webm;codecs=vp9'}),chunks=[];rec.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};rec.onstop=()=>{let blob=new Blob(chunks,{type:'video/webm'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='Hanuman_Aam_Todna_30sec.webm';a.click();b.disabled=false;status.textContent='वीडियो डाउनलोड हो गया';};rec.start();for(let i=0;i<COUNT;i++){let svg=new Blob([frame(i)],{type:'image/svg+xml'}),url=URL.createObjectURL(svg),img=new Image();await new Promise((res,rej)=>{img.onload=res;img.onerror=rej;img.src=url});ctx.clearRect(0,0,W,H);ctx.drawImage(img,0,0,W,H);URL.revokeObjectURL(url);status.textContent='वीडियो फ्रेम: '+(i+1)+'/900';await new Promise(r=>setTimeout(r,1000/FPS));}rec.stop();};
+show(0);
+</script></body></html>
