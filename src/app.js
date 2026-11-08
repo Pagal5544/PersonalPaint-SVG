@@ -24,12 +24,19 @@ function trace(imageData, style, colors, id) {
 $("file").addEventListener("change", event => {
   const file = event.target.files?.[0]; if (!file) return;
   if (videoUrl) URL.revokeObjectURL(videoUrl);
-  videoUrl = URL.createObjectURL(file); video.src = videoUrl;
+  if (!file.type.startsWith("video/") && !/\.(mp4|mov|webm|m4v)$/i.test(file.name)) {
+    say("कृपया MP4, MOV या WebM वीडियो चुनें।"); return;
+  }
+  videoUrl = URL.createObjectURL(file);
+  $("meta").textContent = "वीडियो लोड हो रहा है: " + file.name;
+  $("convert").disabled = true;
   video.onloadedmetadata = () => {
     $("meta").textContent = file.name + " · " + video.videoWidth + "×" + video.videoHeight + " · " + video.duration.toFixed(1) + " sec";
     $("convert").disabled = false; say("वीडियो तैयार है। अब VTracer WASM engine से conversion करें।");
   };
-  video.onerror = () => say("वीडियो browser में decode नहीं हुआ।");
+  video.onerror = () => { $("meta").textContent = "वीडियो लोड नहीं हुआ: " + file.name; say("वीडियो browser में decode नहीं हुआ। दूसरा MP4/WebM आजमाएँ।"); };
+  video.src = videoUrl;
+  video.load();
 });
 $("cancel").onclick = () => { active = false; say("रोकने का अनुरोध भेजा गया…"); };
 $("convert").onclick = async () => {
