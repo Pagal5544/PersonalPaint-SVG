@@ -9,13 +9,14 @@ self.onmessage = (event) => {
       illustration: { colorPrecision: 6, layerDifference: 14, turdSize: 3, cornerThreshold: 58, lengthThreshold: 3, maxIterations: 9, spliceThreshold: 45, pathPrecision: 3 },
       detail: { colorPrecision: 7, layerDifference: 10, turdSize: 1, cornerThreshold: 55, lengthThreshold: 2, maxIterations: 10, spliceThreshold: 42, pathPrecision: 4 }
     };
+    const colorPrecision = Number(colors) <= 8 ? 4 : Number(colors) <= 16 ? 5 : Number(colors) <= 24 ? 6 : 7;
     const tracer = new VTrace(imageData, {
       colorMode: "color",
       hierarchical: "stacked",
       mode: "spline",
       optCurve: true,
       ...presets[style],
-      maxColors: Number(colors)
+      colorPrecision,
     });
     self.postMessage({ id, svg: tracer.getSVG() });
   } catch (error) {

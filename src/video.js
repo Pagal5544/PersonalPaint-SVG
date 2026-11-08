@@ -3,8 +3,10 @@ export function seekVideo(video, time) {
     const done = () => { clearTimeout(timer); resolve(); };
     const fail = () => { clearTimeout(timer); reject(new Error("वीडियो फ्रेम seek नहीं हो पाया")); };
     const timer = setTimeout(fail, 12000);
+    const target = Math.min(time, Math.max(0, video.duration - 0.02));
+    if (Math.abs(video.currentTime - target) < 0.001) { clearTimeout(timer); resolve(); return; }
     video.addEventListener("seeked", done, { once: true });
-    video.currentTime = Math.min(time, Math.max(0, video.duration - 0.02));
+    video.currentTime = target;
   });
 }
 export function drawVideoFrame(video, canvas, width) {
