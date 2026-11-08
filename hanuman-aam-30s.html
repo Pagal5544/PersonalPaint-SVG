@@ -11,13 +11,13 @@ const smooth=x=>{x=Math.max(0,Math.min(1,x));return x*x*(3-2*x)};
 const lerp=(a,b,t)=>a+(b-a)*t;
 function at(t,keys){for(let i=0;i<keys.length-1;i++){let [a,x]=keys[i],[b,y]=keys[i+1];if(t<=b)return lerp(x,y,smooth((t-a)/(b-a)));}return keys[keys.length-1][1]}
 function frame(i){
- const t=i/FPS,reach=at(t,[[0,385],[7,385],[13.5,410],[15.2,410],[19.2,300],[30,300]]),
- ey=at(t,[[0,545],[7,545],[13.5,405],[15.2,405],[19.2,405],[30,405]]),
+ const t=i/FPS,reach=at(t,[[0,385],[8,385],[17,410],[19,410],[24,300],[27,260],[30,300]]),
+ ey=at(t,[[0,545],[8,545],[17,405],[19,405],[24,405],[27,390],[30,405]]),
  hx=at(t,[[0,385],[7,385],[13.5,410],[15.2,410],[19.2,300],[30,300]]),
- hy=at(t,[[0,565],[7,565],[13.5,310],[15.2,310],[19.2,360],[30,360]]),
- fx=at(t,[[0,414],[14,414],[15.2,410],[19.2,300],[30,300]]),
- fy=at(t,[[0,335],[14,335],[15.2,355],[19.2,355],[30,355]]),
- treeFruit=t<14.8,held=t>=14.8,blink=[3,9,17,25,28.5].some(b=>Math.abs(t-b)<.12);
+ hy=at(t,[[0,565],[8,565],[17,310],[19,310],[24,360],[27,370],[30,360]]),
+ fx=at(t,[[0,414],[18.2,414],[19,410],[24,300],[27,260],[30,300]]),
+ fy=at(t,[[0,335],[18.2,335],[19,355],[24,360],[27,370],[30,360]]),
+ treeFruit=t<18.7,held=t>=18.7,blink=[3,11,16,22,29].some(b=>Math.abs(t-b)<.12);
  const fruit=(x,y)=>'<g transform="translate('+x+' '+y+')"><path d="M0-18C-25-38-35 2-22 30-12 56 16 55 27 27 40-5 24-34 0-18Z" fill="#f6b51e" stroke="#a65a18" stroke-width="4"/><path d="M0-19Q3-38 17-43" fill="none" stroke="#69431d" stroke-width="6"/><path d="M7-29Q35-48 43-27Q24-19 7-29Z" fill="#348746"/></g>';
  return `<svg xmlns="http://www.w3.org/2000/svg" width="540" height="960" viewBox="0 0 540 960">
  <defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#62c8ee"/><stop offset=".7" stop-color="#d6efc6"/><stop offset="1" stop-color="#f8d68b"/></linearGradient><linearGradient id="fur" x2="1" y2="1"><stop stop-color="#ffd5a0"/><stop offset=".55" stop-color="#df9258"/><stop offset="1" stop-color="#a85232"/></linearGradient><linearGradient id="cloth" x2="0" y2="1"><stop stop-color="#ffe76d"/><stop offset=".55" stop-color="#ff941f"/><stop offset="1" stop-color="#d8321d"/></linearGradient><linearGradient id="gold" x2="0" y2="1"><stop stop-color="#fff4a6"/><stop offset=".55" stop-color="#e6a42d"/><stop offset="1" stop-color="#995014"/></linearGradient></defs>
@@ -36,7 +36,7 @@ function frame(i){
  <path d="M155 260Q165 185 235 185Q315 190 322 270L310 360Q290 415 235 420Q175 405 158 355Z" fill="url(#fur)" stroke="#85442e" stroke-width="8"/>
  <ellipse cx="238" cy="355" rx="62" ry="42" fill="#f4c18f" stroke="#9c5538" stroke-width="5"/>
  ${blink?'<path d="M190 317Q210 325 229 317M248 317Q268 325 286 317" stroke="#542d25" stroke-width="7" fill="none"/>':'<ellipse cx="210" cy="321" rx="11" ry="15" fill="white"/><ellipse cx="267" cy="321" rx="11" ry="15" fill="white"/><circle cx="213" cy="323" r="6"/><circle cx="270" cy="323" r="6"/>'}
- <path d="M234 250L234 305" stroke="#c72d2d" stroke-width="7"/><ellipse cx="239" cy="371" rx="11" ry="7" fill="#562b25"/>
+ <path d="M234 250L234 305" stroke="#c72d2d" stroke-width="7"/> ${ (t>=26.5&&t<=29.2) ? '<ellipse cx="239" cy="371" rx="15" ry="19" fill="#562b25"/><path d="M229 370Q239 378 249 370" stroke="#f6c49a" stroke-width="3" fill="none"/>' : '<ellipse cx="239" cy="371" rx="11" ry="7" fill="#562b25"/>'}
  <path d="M155 230L145 155 195 180 235 112 275 180 325 155 315 235Z" fill="url(#gold)" stroke="#88501d" stroke-width="7"/><circle cx="235" cy="177" r="14" fill="#c92d35" stroke="#fff1a0" stroke-width="5"/>
  <path d="M170 440Q235 535 300 440" fill="none" stroke="#e6a42d" stroke-width="12"/><path d="M235 505L215 530 235 558 255 530Z" fill="#e6a42d"/>
  ${held?fruit(fx,fy):''}<text x="270" y="940" text-anchor="middle" font-size="22" font-family="serif" fill="#fff3c9">जय श्री राम</text></svg>`;
