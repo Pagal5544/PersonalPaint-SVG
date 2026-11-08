@@ -5,7 +5,7 @@ const video = $("source"), canvas = $("original");
 let frames = [], worker, active = false, playTimer = 0, videoUrl = "", frameWidth = 360, frameHeight = 640;
 const say = message => $("status").textContent = message;
 function setProgress(done, total) { $("progress").style.width = (100 * done / total) + "%"; $("count").textContent = done + " / " + total + " SVG frames"; }
-function makeWorker() { if (worker) worker.terminate(); worker = new Worker("./src/vector-worker.js?v=3", { type: "module" }); }
+function makeWorker() { if (worker) worker.terminate(); worker = new Worker("./src/vector-worker.js?v=4", { type: "module" }); }
 function trace(imageData, style, colors, id) {
   return new Promise((resolve, reject) => {
     const onMessage = event => {
@@ -14,7 +14,9 @@ function trace(imageData, style, colors, id) {
       event.data.error ? reject(new Error(event.data.error)) : resolve(event.data.svg);
     };
     const timer = setTimeout(() => { worker.removeEventListener("message", onMessage); reject(new Error("VTracer worker timeout — CDN/WASM load या processing अटक गया")); }, 60000);
-    const fail = event => { clearTimeout(timer); worker.removeEventListener("message", onMessage); reject(new Error("VTracer worker error: " + (event.message || "unknown"))); };\n    worker.addEventListener("error", fail, { once: true });\n    worker.addEventListener("message", onMessage);
+    const fail = event => { clearTimeout(timer); worker.removeEventListener("message", onMessage); reject(new Error("VTracer worker error: " + (event.message || "unknown"))); };
+    worker.addEventListener("error", fail, { once: true });
+    worker.addEventListener("message", onMessage);
     const copy = new Uint8ClampedArray(imageData.data);
     worker.postMessage({ id, buffer: copy.buffer, width: imageData.width, height: imageData.height, style, colors }, [copy.buffer]);
   });
