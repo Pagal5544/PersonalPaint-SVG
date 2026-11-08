@@ -11,12 +11,14 @@ const smooth=x=>{x=Math.max(0,Math.min(1,x));return x*x*(3-2*x)};
 const lerp=(a,b,t)=>a+(b-a)*t;
 function at(t,keys){for(let i=0;i<keys.length-1;i++){let [a,x]=keys[i],[b,y]=keys[i+1];if(t<=b)return lerp(x,y,smooth((t-a)/(b-a)));}return keys[keys.length-1][1]}
 function frame(i){
- const t=i/FPS,reach=at(t,[[0,385],[8,385],[17,410],[19,410],[24,300],[27,260],[30,300]]),
- ey=at(t,[[0,545],[8,545],[17,405],[19,405],[24,405],[27,390],[30,405]]),
- hx=at(t,[[0,385],[7,385],[13.5,410],[15.2,410],[19.2,300],[30,300]]),
- hy=at(t,[[0,565],[8,565],[17,310],[19,310],[24,360],[27,370],[30,360]]),
- fx=at(t,[[0,414],[18.2,414],[19,410],[24,300],[27,260],[30,300]]),
- fy=at(t,[[0,335],[18.2,335],[19,355],[24,360],[27,370],[30,360]]),
+ const t=i/FPS,
+ elbowX=at(t,[[0,330],[7.5,330],[12,350],[17,365],[19,365],[24,340],[27,325],[30,330]]),
+ elbowY=at(t,[[0,535],[7.5,535],[12,475],[17,420],[19,420],[24,430],[27,420],[30,430]]),
+ hx=at(t,[[0,350],[7.5,350],[12,385],[17,414],[19,395],[24,300],[27,270],[30,300]]),
+ hy=at(t,[[0,610],[7.5,610],[12,475],[17,335],[19,350],[24,370],[27,380],[30,370]]),
+ ey=elbowY,
+ fx=at(t,[[0,414],[18.2,414],[19,395],[24,300],[27,270],[30,300]]),
+ fy=at(t,[[0,335],[18.2,335],[19,350],[24,370],[27,380],[30,370]]),
  treeFruit=t<18.7,held=t>=18.7,blink=[3,11,16,22,29].some(b=>Math.abs(t-b)<.12);
  const fruit=(x,y)=>'<g transform="translate('+x+' '+y+')"><path d="M0-18C-25-38-35 2-22 30-12 56 16 55 27 27 40-5 24-34 0-18Z" fill="#f6b51e" stroke="#a65a18" stroke-width="4"/><path d="M0-19Q3-38 17-43" fill="none" stroke="#69431d" stroke-width="6"/><path d="M7-29Q35-48 43-27Q24-19 7-29Z" fill="#348746"/></g>';
  return `<svg xmlns="http://www.w3.org/2000/svg" width="540" height="960" viewBox="0 0 540 960">
@@ -31,7 +33,7 @@ function frame(i){
  <path d="M155 665Q235 700 325 665L345 815Q275 865 205 865Q160 820 155 665Z" fill="url(#cloth)" stroke="#963d25" stroke-width="8"/>
  <path d="M155 425Q220 390 300 425Q340 500 320 690Q270 745 190 710Q145 650 155 425Z" fill="url(#fur)" stroke="#85442e" stroke-width="8"/>
  <path d="M165 455Q120 500 118 590L105 665" fill="none" stroke="#b96a3d" stroke-width="43" stroke-linecap="round"/>
- <path d="M292 455Q'+(hx-292)+' '+(ey-455)+' '+hx+' '+hy+'" fill="none" stroke="#b96a3d" stroke-width="43" stroke-linecap="round"/><ellipse cx="'+hx+'" cy="'+hy+'" rx="20" ry="16" fill="#f4b77d" stroke="#8f4b31" stroke-width="4"/>
+ <path d="M292 455 C 330 470, '+elbowX+' '+elbowY+', '+hx+' '+hy+'" fill="none" stroke="#8f4b31" stroke-width="49" stroke-linecap="round"/><path d="M292 455 C 330 470, '+elbowX+' '+elbowY+', '+hx+' '+hy+'" fill="none" stroke="#d98450" stroke-width="37" stroke-linecap="round"/><ellipse cx="'+hx+'" cy="'+hy+'" rx="22" ry="18" fill="#f4b77d" stroke="#8f4b31" stroke-width="4"/>
  <path d="M205 390L205 430Q235 455 265 430L265 390Z" fill="url(#fur)" stroke="#85442e" stroke-width="6"/>
  <path d="M155 260Q165 185 235 185Q315 190 322 270L310 360Q290 415 235 420Q175 405 158 355Z" fill="url(#fur)" stroke="#85442e" stroke-width="8"/>
  <ellipse cx="238" cy="355" rx="62" ry="42" fill="#f4c18f" stroke="#9c5538" stroke-width="5"/>
