@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="hi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#101827"><title>Video to SVG Studio — VTracer</title><link rel="stylesheet" href="./src/video-to-svg.css"></head>
+<html lang="hi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#101827"><title>Video to SVG Studio — VTracer</title><link rel="stylesheet" href="./src/video-to-svg.css?v=3"></head>
 <body><main class="app">
 <header><div class="logo">V</div><div><h1>Video to SVG Studio</h1><p>Personal Paint · VTracer WASM vector engine</p></div></header>
 <section class="panel"><label class="drop"><strong>🎞️ वीडियो चुनें</strong><span>MP4 · MOV · WebM — वीडियो आपके डिवाइस पर ही प्रोसेस होगा</span><input id="file" type="file" accept="video/*"></label><video id="source" playsinline muted hidden></video><div id="meta" class="status">अभी कोई वीडियो नहीं चुना गया</div></section>
@@ -13,4 +13,4 @@
 <section class="panel"><h2>Preview</h2><div class="preview"><div><small>Original frame</small><canvas id="original" width="360" height="640"></canvas></div><div><small>VTracer SVG</small><img id="vector" alt="SVG preview"></div></div><div class="actions"><button id="play" class="secondary" disabled>SVG animation चलाएँ</button><button id="saveframe" class="secondary" disabled>पहला SVG डाउनलोड</button></div></section>
 <section class="panel"><h2>Export</h2><div class="actions"><button id="zip" disabled>सभी SVG की ZIP</button><button id="webm" disabled>WebM वीडियो</button></div><p class="note">यह संस्करण VTracer नाम की WebAssembly vectorization library इस्तेमाल करता है। यह साधारण pixel tracing से बेहतर रंगीन vector paths बनाता है, लेकिन source video को manually animated character layers में नहीं बदलता। WebM export silent है।</p></section>
 <footer>Open-source engine: VTracer · Browser-only processing · No API key</footer>
-</main><script type="module" src="./src/app.js"></script></body></html>
+</main><script type="module" src="./src/app.js?v=3"></script></body></html>
