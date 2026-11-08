@@ -13,7 +13,7 @@ function trace(imageData, style, colors, id) {
       worker.removeEventListener("message", onMessage);
       event.data.error ? reject(new Error(event.data.error)) : resolve(event.data.svg);
     };
-    worker.addEventListener("message", onMessage);
+    const timer = setTimeout(() => { worker.removeEventListener("message", onMessage); reject(new Error("VTracer worker timeout — CDN/WASM load या processing अटक गया")); }, 60000);\n    const fail = event => { clearTimeout(timer); worker.removeEventListener("message", onMessage); reject(new Error("VTracer worker error: " + (event.message || "unknown"))); };\n    worker.addEventListener("error", fail, { once: true });\n    worker.addEventListener("message", onMessage);
     const copy = new Uint8ClampedArray(imageData.data);
     worker.postMessage({ id, buffer: copy.buffer, width: imageData.width, height: imageData.height, style, colors }, [copy.buffer]);
   });
@@ -40,7 +40,7 @@ $("convert").onclick = async () => {
     frameWidth = Math.min(width, video.videoWidth);
     frameHeight = Math.max(1, Math.round(frameWidth * video.videoHeight / video.videoWidth));
     const style = $("style").value, colors = +$("colors").value;
-    say("VTracer WebAssembly engine initialize हो रहा है…");
+    say("VTracer poster mode (WASM) initialize हो रहा है…");
     for (let i = 0; i < total && active; i++) {
       await seekVideo(video, i / fps);
       const imageData = drawVideoFrame(video, canvas, frameWidth);
