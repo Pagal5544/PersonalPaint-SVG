@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1400" viewBox="0 0 1000 1400">
+<title>Shri Hanuman Ji — devotional vector artwork</title>
+<defs>
+ <linearGradient id="bg" x2="0" y2="1"><stop stop-color="#170d2d"/><stop offset=".55" stop-color="#4a1740"/><stop offset="1" stop-color="#f28a35"/></linearGradient>
+ <radialGradient id="halo"><stop stop-color="#fff7b0" stop-opacity=".95"/><stop offset=".55" stop-color="#ffbd42" stop-opacity=".42"/><stop offset="1" stop-color="#ff9b22" stop-opacity="0"/></radialGradient>
+ <linearGradient id="gold" x2="0" y2="1"><stop stop-color="#fff3a3"/><stop offset=".35" stop-color="#e7a52e"/><stop offset=".7" stop-color="#a95b13"/><stop offset="1" stop-color="#ffe17a"/></linearGradient>
+ <linearGradient id="skin" x2="1" y2="1"><stop stop-color="#f8b36f"/><stop offset=".5" stop-color="#d97737"/><stop offset="1" stop-color="#8f3d2e"/></linearGradient>
+ <linearGradient id="cloth" x2="0" y2="1"><stop stop-color="#ffdc58"/><stop offset=".45" stop-color="#ed6a16"/><stop offset="1" stop-color="#a91f24"/></linearGradient>
+ <linearGradient id="mace" x2="1" y2="1"><stop stop-color="#fff0a0"/><stop offset=".5" stop-color="#d58a22"/><stop offset="1" stop-color="#7e3e12"/></linearGradient>
+ <filter id="glow"><feGaussianBlur stdDeviation="18"/></filter>
+ <filter id="shadow"><feGaussianBlur stdDeviation="10"/></filter>
+</defs>
+<rect width="1000" height="1400" fill="url(#bg)"/>
+<circle cx="500" cy="490" r="390" fill="url(#halo)"/>
+<circle cx="500" cy="490" r="270" fill="none" stroke="#ffd978" stroke-width="5" opacity=".6"/>
+<circle cx="500" cy="490" r="292" fill="none" stroke="#ffcf62" stroke-width="2" stroke-dasharray="7 18" opacity=".55"/>
+<path d="M0 1040 Q180 900 340 1040 T690 1020 T1000 1000 V1400 H0Z" fill="#291b37" opacity=".72"/>
+<path d="M0 1160 L170 1000 270 1090 410 930 560 1090 730 960 880 1080 1000 980 V1400 H0Z" fill="#1b2037" opacity=".85"/>
+<path d="M0 1250 Q250 1160 500 1240 T1000 1200 V1400 H0Z" fill="#130f28"/>
+<!-- radiant rays -->
+<g stroke="#ffd16c" opacity=".22" stroke-width="5">
+ <path d="M500 120 L500 210"/><path d="M190 230 L275 300"/><path d="M810 230 L725 300"/><path d="M95 520 L205 520"/><path d="M905 520 L795 520"/>
+</g>
+<!-- tail curling behind -->
+<path d="M610 760 C820 760 880 650 835 545 C800 465 705 500 725 570 C740 625 800 610 800 565" fill="none" stroke="#a94c2c" stroke-width="35" stroke-linecap="round"/>
+<path d="M610 760 C820 760 880 650 835 545 C800 465 705 500 725 570 C740 625 800 610 800 565" fill="none" stroke="#f0a05b" stroke-width="13" stroke-linecap="round"/>
+<!-- gada shaft -->
+<path d="M755 365 L645 1120" stroke="#5e321c" stroke-width="34" stroke-linecap="round"/>
+<path d="M755 365 L645 1120" stroke="url(#mace)" stroke-width="23" stroke-linecap="round"/>
+<path d="M742 460 L700 735" stroke="#fff0a0" stroke-width="5" opacity=".7"/>
+<!-- mace head -->
+<g transform="translate(770 320) rotate(10)">
+ <path d="M-12 -120 Q-82 -135 -100 -72 Q-125 -5 -80 65 Q-40 112 0 120 Q42 112 80 65 Q125 -5 100 -72 Q82 -135 12 -120Z" fill="url(#mace)" stroke="#7b3e16" stroke-width="12"/>
+ <path d="M-70 -70 Q0 -110 70 -70 M-95 0 Q0 38 95 0 M-65 72 Q0 100 65 72" fill="none" stroke="#ffe99a" stroke-width="9" opacity=".8"/>
+ <path d="M0 -110 V110 M-90 -5 H90" stroke="#8b4a18" stroke-width="5" opacity=".5"/>
+ <circle r="27" fill="#fff0a0" stroke="#9e5b1c" stroke-width="7"/>
+</g>
+<!-- legs -->
+<path d="M405 850 Q365 960 345 1090 Q330 1160 390 1180 L470 1185 Q505 1160 475 1120 L500 970 L540 1135 Q545 1180 600 1185 L680 1170 Q710 1140 675 1110 L610 870Z" fill="url(#skin)" stroke="#71352a" stroke-width="10"/>
+<!-- feet -->
+<path d="M355 1140 Q300 1155 285 1195 Q310 1225 405 1215 L470 1190 450 1150Z" fill="#d77b43" stroke="#71352a" stroke-width="9"/>
+<path d="M585 1140 Q630 1150 700 1180 Q715 1210 665 1220 L585 1205 555 1170Z" fill="#d77b43" stroke="#71352a" stroke-width="9"/>
+<!-- dhoti -->
+<path d="M365 760 Q500 715 640 765 L625 965 Q575 1030 510 1125 Q470 1060 430 1015 Q380 955 365 760Z" fill="url(#cloth)" stroke="#7c251d" stroke-width="12"/>
+<path d="M390 790 Q480 850 615 790 L595 900 Q510 965 420 900Z" fill="#ffbd32" opacity=".85"/>
+<path d="M510 820 Q470 940 510 1105 Q555 1000 580 840" fill="none" stroke="#ffe58a" stroke-width="14"/>
+<path d="M385 765 Q500 815 630 760" fill="none" stroke="#fff0a0" stroke-width="20"/>
+<path d="M410 790 L445 845 M600 790 L565 845" stroke="#9b3d20" stroke-width="8"/>
+<!-- torso -->
+<path d="M390 430 Q500 385 610 430 Q670 520 640 730 Q620 790 500 805 Q380 790 360 730 Q330 520 390 430Z" fill="url(#skin)" stroke="#783729" stroke-width="12"/>
+<!-- chest fur subtle -->
+<path d="M410 500 Q500 540 590 500 M400 560 Q500 605 600 560" fill="none" stroke="#ffd09a" stroke-width="7" opacity=".55"/>
+<!-- arms -->
+<path d="M390 465 Q315 475 285 570 L235 735 Q220 780 265 800 Q310 810 330 765 L410 620Z" fill="url(#skin)" stroke="#783729" stroke-width="12"/>
+<path d="M605 465 Q675 480 700 560 L720 650 Q735 700 690 720 Q645 730 630 685 L570 590Z" fill="url(#skin)" stroke="#783729" stroke-width="12"/>
+<!-- arm bands -->
+<path d="M270 680 Q300 700 333 690 L350 730 Q310 755 250 730Z" fill="url(#gold)" stroke="#7d4317" stroke-width="7"/>
+<path d="M655 620 Q690 635 718 615 L735 655 Q695 685 650 665Z" fill="url(#gold)" stroke="#7d4317" stroke-width="7"/>
+<!-- hands -->
+<path d="M225 730 Q190 755 205 795 Q230 825 270 800 L300 765 Q280 735 255 730Z" fill="#e99a5b" stroke="#783729" stroke-width="9"/>
+<path d="M680 675 Q665 710 690 740 Q720 755 745 725 L760 690 Q735 665 710 660Z" fill="#e99a5b" stroke="#783729" stroke-width="9"/>
+<!-- sacred chest necklace -->
+<path d="M405 450 Q500 610 595 450" fill="none" stroke="url(#gold)" stroke-width="18"/>
+<path d="M425 470 Q500 635 575 470" fill="none" stroke="#fff0a0" stroke-width="5"/>
+<path d="M500 590 L470 635 500 690 530 635Z" fill="url(#gold)" stroke="#8d4b18" stroke-width="7"/>
+<!-- neck -->
+<path d="M455 360 L455 445 Q500 485 545 445 L545 360Z" fill="url(#skin)" stroke="#783729" stroke-width="9"/>
+<!-- head and ears -->
+<path d="M410 250 Q365 220 350 280 Q340 350 410 365Z" fill="#d87942" stroke="#783729" stroke-width="10"/>
+<path d="M590 250 Q635 220 650 280 Q660 350 590 365Z" fill="#d87942" stroke="#783729" stroke-width="10"/>
+<path d="M390 275 Q370 290 400 330 M610 275 Q630 290 600 330" fill="none" stroke="#f6bc80" stroke-width="9"/>
+<path d="M405 175 Q500 125 595 175 Q625 230 605 325 Q585 405 500 420 Q415 405 395 325 Q375 230 405 175Z" fill="url(#skin)" stroke="#71352b" stroke-width="12"/>
+<!-- face fur / muzzle -->
+<path d="M425 300 Q500 270 575 300 Q570 375 500 385 Q430 375 425 300Z" fill="#f5c18b" opacity=".9" stroke="#8e482e" stroke-width="7"/>
+<path d="M462 328 Q500 350 538 328 Q535 365 500 368 Q465 365 462 328Z" fill="#d88a62"/>
+<ellipse cx="500" cy="333" rx="18" ry="12" fill="#572b27"/>
+<!-- eyes -->
+<path d="M425 265 Q455 235 482 265 Q455 290 425 265Z" fill="#fff4d5" stroke="#71352b" stroke-width="6"/>
+<path d="M518 265 Q545 235 575 265 Q545 290 518 265Z" fill="#fff4d5" stroke="#71352b" stroke-width="6"/>
+<circle cx="457" cy="265" r="10" fill="#2d1b1b"/><circle cx="545" cy="265" r="10" fill="#2d1b1b"/>
+<path d="M420 240 Q455 220 485 245 M515 245 Q545 220 580 240" fill="none" stroke="#6b3028" stroke-width="11" stroke-linecap="round"/>
+<!-- tilak -->
+<path d="M500 205 Q475 250 500 275 Q525 250 500 205Z" fill="#fff0bf"/>
+<path d="M500 215 V260" stroke="#c51e22" stroke-width="9" stroke-linecap="round"/>
+<!-- crown -->
+<path d="M390 195 L375 95 Q420 120 445 55 Q475 105 500 28 Q525 105 555 55 Q580 120 625 95 L610 195 Q500 225 390 195Z" fill="url(#gold)" stroke="#7e4319" stroke-width="12"/>
+<path d="M400 165 Q500 195 600 165 M420 125 L580 125" fill="none" stroke="#fff0a0" stroke-width="8"/>
+<circle cx="500" cy="100" r="23" fill="#c92e35" stroke="#fff0a0" stroke-width="8"/>
+<circle cx="430" cy="145" r="12" fill="#1d9b83"/><circle cx="570" cy="145" r="12" fill="#1d9b83"/>
+<!-- crown jewels -->
+<path d="M390 195 Q500 240 610 195" fill="none" stroke="#fff0a0" stroke-width="12"/>
+<!-- ornaments -->
+<g fill="url(#gold)" stroke="#794019" stroke-width="6">
+ <circle cx="395" cy="340" r="22"/><circle cx="605" cy="340" r="22"/>
+ <path d="M370 520 Q395 490 420 520 L410 555 Q390 570 370 555Z"/>
+ <path d="M580 520 Q605 490 630 520 L630 555 Q610 570 590 555Z"/>
+ <path d="M430 770 Q500 810 570 770 L560 800 Q500 840 440 800Z"/>
+</g>
+<!-- sacred gada hand grip -->
+<path d="M660 735 Q680 710 710 725 L700 765 Q675 780 655 760Z" fill="#e99a5b" stroke="#783729" stroke-width="8"/>
+<!-- ground glow -->
+<ellipse cx="500" cy="1245" rx="260" ry="38" fill="#ffbd4d" opacity=".22" filter="url(#glow)"/>
+<text x="500" y="1335" text-anchor="middle" font-family="serif" font-size="42" fill="#ffe5a0" letter-spacing="7">जय श्री राम</text>
+</svg>
