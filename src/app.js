@@ -13,7 +13,8 @@ function trace(imageData, style, colors, id) {
       worker.removeEventListener("message", onMessage);
       event.data.error ? reject(new Error(event.data.error)) : resolve(event.data.svg);
     };
-    const timer = setTimeout(() => { worker.removeEventListener("message", onMessage); reject(new Error("VTracer worker timeout — CDN/WASM load या processing अटक गया")); }, 60000);\n    const fail = event => { clearTimeout(timer); worker.removeEventListener("message", onMessage); reject(new Error("VTracer worker error: " + (event.message || "unknown"))); };\n    worker.addEventListener("error", fail, { once: true });\n    worker.addEventListener("message", onMessage);
+    const timer = setTimeout(() => { worker.removeEventListener("message", onMessage); reject(new Error("VTracer worker timeout — CDN/WASM load या processing अटक गया")); }, 60000);
+    const fail = event => { clearTimeout(timer); worker.removeEventListener("message", onMessage); reject(new Error("VTracer worker error: " + (event.message || "unknown"))); };\n    worker.addEventListener("error", fail, { once: true });\n    worker.addEventListener("message", onMessage);
     const copy = new Uint8ClampedArray(imageData.data);
     worker.postMessage({ id, buffer: copy.buffer, width: imageData.width, height: imageData.height, style, colors }, [copy.buffer]);
   });
