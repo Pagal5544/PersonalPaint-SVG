@@ -5,7 +5,7 @@ const video = $("source"), canvas = $("original");
 let frames = [], worker, active = false, playTimer = 0, videoUrl = "", frameWidth = 360, frameHeight = 640;
 const say = message => $("status").textContent = message;
 function setProgress(done, total) { $("progress").style.width = (100 * done / total) + "%"; $("count").textContent = done + " / " + total + " SVG frames"; }
-function makeWorker() { if (worker) worker.terminate(); worker = new Worker("./src/vector-worker.js", { type: "module" }); }
+function makeWorker() { if (worker) worker.terminate(); worker = new Worker("./src/vector-worker.js?v=3", { type: "module" }); }
 function trace(imageData, style, colors, id) {
   return new Promise((resolve, reject) => {
     const onMessage = event => {
