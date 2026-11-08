@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#111827"><title>Personal Paint SVG Studio</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1020;--panel:#151d31;--line:#293650;--text:#edf2ff;--muted:#9aa8c2;--accent:#8b9cff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 20% 0%,#1d2a4a 0,transparent 42%),var(--bg);color:var(--text);font:15px system-ui,-apple-system,Segoe UI,sans-serif}
+header{padding:22px max(18px,calc((100% - 1200px)/2));border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+h1{font-size:22px;margin:0}header p{margin:4px 0 0;color:var(--muted);font-size:13px}
+main{max-width:1200px;margin:22px auto;padding:0 16px;display:grid;grid-template-columns:minmax(290px,380px) 1fr;gap:18px}
+.panel{background:linear-gradient(160deg,#18233a,#111a2b);border:1px solid var(--line);border-radius:18px;padding:18px;min-width:0}
+h2{font-size:16px;margin:0 0 14px}.field{display:block;margin:13px 0 6px;color:#cbd6ed;font-size:13px}
+textarea,input{width:100%;background:#0b1324;border:1px solid #34435f;border-radius:10px;color:var(--text);padding:11px;font:inherit;outline:none}
+textarea:focus,input:focus{border-color:var(--accent)}textarea{min-height:125px;resize:vertical}
+button{border:1px solid #405174;background:#202d48;color:white;border-radius:10px;padding:10px 13px;font-weight:650;cursor:pointer}
+button.primary{background:linear-gradient(110deg,#657cf5,#8a63df);border:0}button:disabled{opacity:.5;cursor:wait}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.hint,.status{color:var(--muted);font-size:12px;line-height:1.5}.status{margin-top:12px;min-height:20px}.preview{min-height:500px;display:flex;flex-direction:column}
+.canvas{flex:1;min-height:450px;border-radius:13px;overflow:auto;background-color:#f7f8fb;background-image:linear-gradient(45deg,#e5e8ef 25%,transparent 25%),linear-gradient(-45deg,#e5e8ef 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#e5e8ef 75%),linear-gradient(-45deg,transparent 75%,#e5e8ef 75%);background-size:24px 24px;background-position:0 0,0 12px,12px -12px,-12px 0;display:grid;place-items:center;padding:12px}
+.canvas svg{max-width:100%;max-height:75vh;width:auto;height:auto;box-shadow:0 8px 30px #0003}
+#code{min-height:130px;font:12px ui-monospace,monospace}
+.examples{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.examples button{font-size:12px;padding:7px 9px}
+footer{max-width:1200px;margin:0 auto;padding:8px 16px 30px;color:var(--muted);font-size:12px}
+@media(max-width:800px){main{grid-template-columns:1fr}.preview{min-height:430px}.canvas{min-height:340px}}
+</style></head>
+<body>
+<header><div><h1>🎨 Personal Paint — SVG Studio</h1><p>Describe a picture. Generate editable vector art. No Android app required.</p></div><span class="hint">Browser-based · SVG export</span></header>
+<main>
+<section class="panel">
+<h2>1. Create with AI</h2>
+<label class="field" for="key">Gemini API key (used only in this browser session)</label>
+<input id="key" type="password" placeholder="Paste your Gemini API key">
+<p class="hint">Get an API key from Google AI Studio. Your key is not saved or sent to this GitHub project; it is sent directly from your browser to Google's API when you generate.</p>
+<label class="field" for="prompt">What should I draw?</label>
+<textarea id="prompt" placeholder="Example: A majestic white tiger sitting in a misty forest, cinematic moonlight, detailed leaves, elegant composition..."></textarea>
+<div class="examples">
+<button data-prompt="A beautiful red rose with layered petals, green leaves and delicate thorns, botanical illustration">Rose</button>
+<button data-prompt="A majestic blue peacock with a fully spread iridescent tail, intricate feather eyes, elegant Indian miniature art">Peacock</button>
+<button data-prompt="A magical mountain temple at sunrise, waterfalls, birds, detailed fantasy landscape">Temple</button>
+</div>
+<div class="row"><button class="primary" id="generate">Generate SVG</button><button id="clear">Clear</button></div>
+<div class="status" id="status" role="status">Enter your prompt and API key to generate a new drawing.</div>
+<hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
+<h2>2. Or paste SVG code</h2>
+<label class="field" for="code">SVG markup</label><textarea id="code" spellcheck="false" placeholder="<svg xmlns=...>...</svg>"></textarea>
+<div class="row"><button id="previewCode">Preview SVG</button><button id="sample">Load sample</button></div>
+<p class="hint">AI can also return SVG markup directly. Paste it here to preview and export.</p>
+</section>
+<section class="panel preview">
+<div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap"><h2>Live preview</h2><span class="hint" id="dimensions">SVG canvas</span></div>
+<div class="canvas" id="canvas"><span style="color:#64748b">Your drawing will appear here</span></div>
+<div class="row"><button class="primary" id="downloadSvg" disabled>Download SVG</button><button id="downloadPng" disabled>Export PNG</button><button id="copyCode" disabled>Copy SVG</button></div>
+</section>
+</main>
+<footer>Vector output is editable SVG, not a raster AI image. For best results, ask for clean shapes, gradients, paths and a clear composition. API usage may be subject to Google's pricing and limits.</footer>
+<script>
+const $=id=>document.getElementById(id);let currentSvg='';
+const systemInstruction='You are a professional vector illustrator. Create a polished, detailed, visually coherent illustration from the user description. Return ONLY one complete valid SVG document, no Markdown fences and no explanations. Use viewBox="0 0 1024 1024", include xmlns="http://www.w3.org/2000/svg", use vector paths, shapes, gradients and filters where useful. Do not embed raster images, external URLs, scripts, foreignObject or text that explains the prompt. Keep all artwork within the viewBox. Use a considered color palette and a finished composition.';
+document.querySelectorAll('[data-prompt]').forEach(b=>b.onclick=()=>{$('prompt').value=b.dataset.prompt});
+function setStatus(t){$('status').textContent=t}
+function safeSvg(raw){
+ let s=raw.trim().replace(/^\uFEFF/,'').replace(/^\x60{3}(?:svg|xml)?\s*/i,'').replace(/\s*\x60{3}$/,'');
+ const start=s.search(/<svg\b/i),end=s.toLowerCase().lastIndexOf('</svg>');
+ if(start<0||end<0)throw Error('Valid <svg>...</svg> markup was not found.');
+ s=s.slice(start,end+6);
+ const doc=new DOMParser().parseFromString(s,'image/svg+xml');
+ if(doc.querySelector('parsererror'))throw Error('SVG XML is invalid. Ask the AI to return valid SVG markup.');
+ const root=doc.documentElement;
+ if(root.localName!=='svg')throw Error('Root element must be <svg>.');
+ const forbidden='script,foreignObject,iframe,object,embed,audio,video';
+ if(root.querySelector(forbidden))throw Error('This SVG contains an unsupported active element.');
+ for(const el of [root,...root.querySelectorAll('*')]){
+  for(const a of [...el.attributes]){
+   const n=a.name.toLowerCase(),v=a.value.trim().toLowerCase();
+   if(n.startsWith('on'))el.removeAttribute(a.name);
+   if((n==='href'||n.endsWith(':href'))&&!v.startsWith('#'))el.removeAttribute(a.name);
+   if(v.includes('javascript:')||v.includes('http://')||v.includes('https://'))el.removeAttribute(a.name);
+  }
+ }
+ if(!root.getAttribute('viewBox'))root.setAttribute('viewBox','0 0 1024 1024');
+ if(!root.getAttribute('xmlns'))root.setAttribute('xmlns','http://www.w3.org/2000/svg');
+ return new XMLSerializer().serializeToString(root);
+}
+function showSvg(raw){
+ const svg=safeSvg(raw);currentSvg=svg;$('code').value=svg;
+ const doc=new DOMParser().parseFromString(svg,'image/svg+xml');
+ const root=doc.documentElement;const vb=root.getAttribute('viewBox')||'0 0 1024 1024';
+ $('dimensions').textContent='viewBox: '+vb;
+ $('canvas').innerHTML='';$('canvas').appendChild(document.importNode(root,true));
+ ['downloadSvg','downloadPng','copyCode'].forEach(id=>$(id).disabled=false);
+}
+$('generate').onclick=async()=>{
+ const key=$('key').value.trim(),prompt=$('prompt').value.trim();
+ if(!key){setStatus('Please paste your Gemini API key first.');return}
+ if(!prompt){setStatus('Please describe the picture first.');return}
+ const btn=$('generate');btn.disabled=true;setStatus('AI is creating vector paths and shapes…');
+ try{
+  const url='https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='+encodeURIComponent(key);
+  const response=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({systemInstruction:{parts:[{text:systemInstruction}]},contents:[{role:'user',parts:[{text:prompt}]}],generationConfig:{temperature:0.7,maxOutputTokens:12000,responseMimeType:'text/plain'}})});
+  const data=await response.json();
+  if(!response.ok)throw Error(data.error?.message||('API error '+response.status));
+  const output=(data.candidates?.[0]?.content?.parts||[]).map(p=>p.text||'').join('');
+  if(!output)throw Error('The AI returned no SVG. Try a simpler prompt.');
+  showSvg(output);setStatus('Done — your SVG drawing is ready. You can download it or edit the SVG code.');
+ }catch(e){setStatus('Error: '+e.message)}
+ finally{btn.disabled=false}
+};
+$('previewCode').onclick=()=>{try{showSvg($('code').value);setStatus('SVG preview updated.')}catch(e){setStatus(e.message)}};
+$('sample').onclick=()=>{const s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024"><defs><linearGradient id="p" x2="0" y2="1"><stop stop-color="#ff9a9e"/><stop offset="1" stop-color="#fad0c4"/></linearGradient></defs><rect width="1024" height="1024" rx="70" fill="#fff5f2"/><path d="M512 770 C300 620 230 470 330 350 C410 255 500 330 512 405 C560 280 700 260 770 370 C870 535 680 690 512 770Z" fill="url(#p)" stroke="#c73558" stroke-width="12"/><path d="M512 770 Q520 850 470 930 M510 820 Q620 860 700 810 M510 850 Q400 880 340 830" fill="none" stroke="#2d8b57" stroke-width="25" stroke-linecap="round"/><path d="M512 430 Q450 350 390 390 M520 450 Q600 340 680 390 M500 520 Q420 470 360 510" fill="none" stroke="#fff0e8" stroke-width="16" stroke-linecap="round"/></svg>';showSvg(s);setStatus('Sample rose loaded.');};
+$('clear').onclick=()=>{$('prompt').value='';$('code').value='';$('canvas').innerHTML='<span style="color:#64748b">Your drawing will appear here</span>';currentSvg='';$('dimensions').textContent='SVG canvas';['downloadSvg','downloadPng','copyCode'].forEach(id=>$(id).disabled=true);setStatus('Canvas cleared.')};
+function saveBlob(blob,name){const a=document.createElement('a');const u=URL.createObjectURL(blob);a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1500)}
+$('downloadSvg').onclick=()=>saveBlob(new Blob([currentSvg],{type:'image/svg+xml;charset=utf-8'}),'personal-paint.svg');
+$('copyCode').onclick=async()=>{try{await navigator.clipboard.writeText(currentSvg);setStatus('SVG code copied.')}catch(e){setStatus('Clipboard unavailable in this browser.')}};
+$('downloadPng').onclick=()=>{const blob=new Blob([currentSvg],{type:'image/svg+xml'}),u=URL.createObjectURL(blob),img=new Image();img.onload=()=>{const c=document.createElement('canvas');c.width=1024;c.height=1024;c.getContext('2d').drawImage(img,0,0,1024,1024);c.toBlob(b=>saveBlob(b,'personal-paint.png'),'image/png');URL.revokeObjectURL(u)};img.onerror=()=>{URL.revokeObjectURL(u);setStatus('Could not render PNG. Download SVG instead.')};img.src=u};
+</script></body></html>
